@@ -1,0 +1,92 @@
+Helpers {
+	Node = /* empty */
+
+  anyExcept<lit> = (~ lit any)
+  anyExceptStar<lit> = (~ lit any)*
+  anyExceptPlus<lit> = (~ lit any)+
+  AnyExcept<lit> = (~ lit any)
+  AnyExceptPlus<lit> = (~ lit any)+
+  AnyExceptStar<lit> = (~ lit any)*    
+  
+  quote = singleQuote | doubleQuote
+
+  doubleQuote = "\"" | "“" | "”"  
+  singleQuote = "'" | "‘" | "’"
+
+  tag = 
+  	| openingTagStart
+    | openingTagEnd
+    | closingTagStart
+    | closingTagEnd
+    | selfClosingTagEnd  
+  
+  openingTagStart = "<"
+  openingTagEnd = ">"
+  closingTagStart = "</"
+  closingTagEnd = ">"
+  selfClosingTagEnd = "/>"
+  
+  liquidDropStart = "{{"
+  liquidDropEnd = "}}"
+}
+
+Liquid <: Helpers {
+	liquidDropNode = liquidDropStart space* liquidDropValue liquidDropEnd
+  liquidDropValue = anyExceptStar<liquidDropEnd>
+}
+
+LiquidX <: Liquid {
+	Node := (ElementNode | TextNode)*
+
+  TextNode = anyExceptPlus<(ElementNode | InvalidElementNode)>
+
+  // We don't want invalid element nodes to be interpreted as text nodes.
+	InvalidElementNode =
+  	| ElementOpeningTagStartWithoutEnd  
+    | ElementOpeningTagEndWithoutStart
+    | ElementClosingTagStartWithoutEnd
+    | ElementClosingTagEndWithoutStart
+    | ElementSelfClosingTagEndWithoutStart
+
+  ElementOpeningTagStartWithoutEnd = #(openingTagStart tagName) Attributes
+  ElementOpeningTagEndWithoutStart = #(tagName) Attributes openingTagEnd
+  ElementClosingTagStartWithoutEnd = #(closingTagStart tagName)
+  ElementClosingTagEndWithoutStart = #(tagName) closingTagEnd
+  ElementSelfClosingTagEndWithoutStart = #(tagName) Attributes selfClosingTagEnd
+
+	ElementNode =
+    | ElementOpeningTag
+    | ElementClosingTag
+    | ElementSelfClosingTag
+  
+  ElementOpeningTag = #(openingTagStart tagName) Attributes openingTagEnd
+  ElementClosingTag = #(closingTagStart tagName) closingTagEnd
+  ElementSelfClosingTag = #(openingTagStart tagName) Attributes selfClosingTagEnd
+      
+  tagName = leadingTagNamePart trailingTagNamePart*
+
+  leadingTagNamePart = upper
+  trailingTagNamePart = letter | digit
+  
+  Attributes = Attribute*
+  Attribute =
+    | AttributeDoubleQuoted
+    | AttributeSingleQuoted
+    | AttributeUnquoted
+    | AttributeEmpty
+      
+  AttributeDoubleQuoted = attributeName "=" doubleQuote #(attributeDoubleQuotedValue doubleQuote)
+  AttributeSingleQuoted = attributeName "=" singleQuote #(attributeSingleQuotedValue singleQuote)
+  AttributeUnquoted = attributeName "=" attributeUnquotedValue
+  AttributeEmpty = attributeName
+  
+  attributeName = anyExceptPlus<(space | quote | "=" | tag)>
+  
+  attributeDoubleQuotedValue = attributeDoubleQuotedTextNode | liquidDropNode
+  attributeSingleQuotedValue = attributeSingleQuotedTextNode | liquidDropNode
+  attributeUnquotedValue = attributeUnquotedTextNode | liquidDropNode
+  
+  attributeDoubleQuotedTextNode = anyExceptPlus<(doubleQuote | liquidDropStart)>
+  attributeSingleQuotedTextNode = anyExceptPlus<(singleQuote | liquidDropStart)>
+  attributeUnquotedTextNode = anyExceptPlus<(space | quote | "=" | tag | liquidDropStart)>
+}

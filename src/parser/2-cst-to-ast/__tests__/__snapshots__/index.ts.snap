@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser/2-cst-to-ast element-node should throw an error if corresponding closing tag is missing 1`] = `
+"> 1 | <Box>
+    | ^^^^ LiquidX element 'Box' has no corresponding closing tag."
+`;
+
+exports[`parser/2-cst-to-ast element-node should throw an error if corresponding opening tag is missing 1`] = `
+"> 1 | </Box>
+    | ^^^^^ LiquidX element 'Box' has no corresponding opening tag"
+`;
