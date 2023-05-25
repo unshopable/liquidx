@@ -1,15 +1,31 @@
 {
-  "name": "liquidx",
-  "version": "1.0.0",
+  "name": "@unshopable/liquidx",
+  "version": "0.1.0-alpha.3",
   "description": "",
-  "main": "index.js",
+  "private": false,
   "scripts": {
-    "postinstall": "husky install",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsup",
+    "build:fix": "esno scripts/postbuild.ts",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@babel/code-frame": "^7.21.4",
     "line-column": "^1.0.2",
@@ -21,10 +37,12 @@
     "@types/jest": "^29.5.1",
     "@types/line-column": "^1.0.0",
     "dedent-js": "^1.0.1",
+    "esno": "^0.16.3",
     "husky": "^8.0.0",
     "jest": "^29.5.0",
     "prettier": "^2.8.8",
     "ts-jest": "^29.1.0",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "tsup": "^6.7.0"
   }
 }
