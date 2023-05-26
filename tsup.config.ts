@@ -5,6 +5,7 @@ const tsupConfig: Options = {
   clean: true,
   format: ['cjs', 'esm'],
   dts: true,
+  onSuccess: 'npm run build:grammar',
 };
 
 export default tsupConfig;
