@@ -1,17 +1,16 @@
 {
   "name": "@unshopable/liquidx",
   "version": "0.1.0-alpha.4",
-  "description": "",
-  "private": false,
-  "scripts": {
-    "test": "jest",
-    "build": "tsup",
-    "build:grammar": "esno scripts/build-grammar.ts",
-    "prepublishOnly": "npm run build"
-  },
-  "keywords": [],
+  "description": "XML-like syntax extension to Shopify's Liquid template language",
   "author": "",
+  "keywords": [
+    "xml",
+    "liquid",
+    "shopify",
+    "shopify-theme"
+  ],
   "license": "MIT",
+  "private": false,
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -25,6 +24,12 @@
   "files": [
     "dist"
   ],
+  "scripts": {
+    "test": "jest",
+    "build": "tsup",
+    "build:grammar": "esno scripts/build-grammar.ts",
+    "prepublishOnly": "npm run build"
+  },
   "dependencies": {
     "@babel/code-frame": "^7.21.4",
     "line-column": "^1.0.2",
