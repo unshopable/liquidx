@@ -2,7 +2,7 @@
 
 LiquidX is a XML-like syntax extension to Shopify's Liquid template language. It's not intended to run on Shopify's servers, thus needs to be used by preprocessors (transpilers) to transform it into standard Liquid.
 
-```html
+```liquid
 <Grid columns="{{ 2 }}">
   <GridItem>
     <Media placeholder="product-1" />
@@ -20,7 +20,7 @@ LiquidX is a XML-like syntax extension to Shopify's Liquid template language. It
         </Text>
       </VerticalStack>
 
-      <button plain icon_right="arrow-right">Learn more</button>
+      <Button plain icon_right="arrow-right">Learn more</Button>
     </VerticalStack>
   </GridItem>
 </Grid>
