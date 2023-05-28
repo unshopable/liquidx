@@ -32,6 +32,8 @@ LiquidX is a XML-like syntax extension to Shopify's Liquid template language. It
 
 - [Motivation](#motivation)
 - [Getting started](#getting-started)
+- [Components](#components)
+  - [Props](#props)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -56,10 +58,7 @@ Assuming that you already installed Melter, create a new file:
   melter-liquidx
   ├── node_modules
   ├── src
-  │   ├── components
-  │       └── button.liquid
-  │   └── sections
-  │       └── section.liquid
+  │    └── ...
   ├── melter.config.js
 + ├── liquidx-plugin.js
   ├── package-lock.json
@@ -101,6 +100,139 @@ Now add this to your melter config:
 
   module.exports = melterConfig;
 ```
+
+## Components
+
+Now that LiquidX is ready to be transpiled, let's talk about how to create components. Let's take a look at an example.
+
+First, create some new files:
+
+```diff
+  melter-liquidx
+  ├── node_modules
+  ├── src
++ │   ├── snippets
++ │   │   └── button.liquid
++ │   └── sections
++ │       └── section.liquid
+  ├── melter.config.js
+  ├── liquidx-plugin.js
+  ├── package-lock.json
+  └── package.json
+```
+
+> **Note**
+> We recommend creating a dedicated directory for components to have a clear distinction between "snippets" and "components". This can easily be configured with the `paths` option in Melter.
+
+**components/button.liquid**
+
+```liquid
+<button>{{ children }}</button>
+```
+
+**sections/section.liquid**
+
+```liquid
+<Button>Click me!</Button>
+```
+
+In this example `{{ children }}` will render "Click me!".
+
+It's important to understand, that components are basically just native Shopify snippets that give access to an optional `children` property.
+
+You could also rewrite the example above:
+
+```diff
+- <button>{{ children }}</button>
++ <Button children="Click me!" />
+```
+
+With this in mind you can start building reusable UI components. For instance, you can update the `button` component so it can either be a `<button>` or `<a>`:
+
+**components/button.liquid**
+
+```diff
++ {%- liquid
++   # Determine tag name and optional attributes of the underlying element (button or anchor).
++
++   assign tag_name = 'button'
++   assign inner_attrs = null
++
++   if url
++     assign tag_name = 'a'
++     assign href_attr = 'href="' | append: url | append: '"' | sort
++     assign inner_attrs = inner_attrs | concat: href_attr
++   endif
++ -%}
++
++ <{{ tag_name }}{{ inner_attrs | join: ' ' }}>{{ children }}</button>
+- <button>{{ children }}</button>
+```
+
+**sections/section.liquid**
+
+```liquid
+<Button>I'm a Button!</Button>
+<Button url="/cart">I'm a Link!</Button>
+```
+
+This renders:
+
+```liquid
+<button>I'm a Button!</button>
+<a href="/cart">I'm a Link!</a>
+```
+
+### Props
+
+Props can be of any type Liquid supports:
+
+```liquid
+<MyComponent
+  string1="string"
+  string2="1337"
+  string3="{{ '1337' }}"
+  number="{{ 1 }}"
+  float="{{ 1.5 }}"
+  boolean1="{{ true }}"
+  boolean2
+  variable="{{ cart }}"
+  ...
+/>
+```
+
+For a smooth developer experience make sure to document all available props in your component:
+
+```diff
++ {% comment %}
++   Renders a button component.
++
++   @param {string} [url] - A destination to link to, rendered in the href attribute of a link.
++   @param {any} children
++
++   @example
++
++   <Button>Add to Cart</Button>
++ {% endcomment %}
++
+  {%- liquid
+    # Determine tag name and optional attributes of the underlying element (button or anchor).
+
+    assign tag_name = 'button'
+    assign inner_attrs = null
+
+    if url
+      assign tag_name = 'a'
+      assign href_attr = 'href="' | append: url | append: '"' | sort
+      assign inner_attrs = inner_attrs | concat: href_attr
+    endif
+  -%}
+
+  <{{ tag_name }}{{ inner_attrs | join: ' ' }}>{{ children }}</button>
+```
+
+> **Note**
+> This "LiquidDoc" is also be what will be used to power intellisense/autocompletion in VSCode in a later release.
 
 ## Contributing
 
