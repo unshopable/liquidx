@@ -26,7 +26,7 @@ LiquidX is a XML-like syntax extension to Shopify's Liquid template language. It
 </Grid>
 ```
 
-![liquidx-preview](https://github.com/unshopable/liquidx/assets/64148345/62a10849-7335-4f97-8968-f1cb013ce58c)
+![liquidx-preview](https://github.com/unshopable/liquidx/assets/64148345/1a4fcdc3-bae2-4f64-85c7-5056a4795db9)
 
 ## Table of Contents
 
