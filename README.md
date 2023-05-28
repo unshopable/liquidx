@@ -232,7 +232,7 @@ For a smooth developer experience make sure to document all available props in y
 ```
 
 > **Note**
-> This "LiquidDoc" is also be what will be used to power intellisense/autocompletion in VSCode in a later release.
+> This "LiquidDoc" is also what will be used to power intellisense/autocompletion in VSCode in a later release.
 
 ## Contributing
 
