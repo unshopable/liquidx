@@ -46,7 +46,7 @@ Out of the box, Liquid does not support nested structures for components (aka sn
 ## Getting started
 
 > **Note**
-> The fastest way to implement LiquidX is [Melter](https://github.com/unshopable/melter) in comination with the [LiquidX Melter Plugin](https://github.com/unshopable/melter-plugin-liquidx).
+> If you're not using any build tools yet, the fastest way to implement LiquidX is [Melter](https://github.com/unshopable/melter) with the [LiquidX Melter Plugin](https://github.com/unshopable/melter-plugin-liquidx).
 
 This package exports a `render` function which expects a string. If this string contains LiquidX syntax than it's rendered to Shopify-compatible code.
 
