@@ -72,7 +72,7 @@ const { render } = require('@unshopable/liquidx');
 const { Plugin } = require('@unshopable/melter');
 
 class LiquidXPlugin extends Plugin {
-  apply(compiler): void {
+  apply(compiler) {
     compiler.hooks.emitter.tap('LiquidXPlugin', (emitter) => {
       emitter.hooks.beforeAssetAction.tap('LiquidXPlugin', (asset) => {
         if (asset.action !== 'remove') {
