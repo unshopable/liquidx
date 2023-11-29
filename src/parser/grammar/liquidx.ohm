@@ -38,21 +38,7 @@ Liquid <: Helpers {
 LiquidX <: Liquid {
 	Node := (ElementNode | TextNode)*
 
-  TextNode = anyExceptPlus<(ElementNode | InvalidElementNode)>
-
-  // We don't want invalid element nodes to be interpreted as text nodes.
-	InvalidElementNode =
-  	| ElementOpeningTagStartWithoutEnd  
-    | ElementOpeningTagEndWithoutStart
-    | ElementClosingTagStartWithoutEnd
-    | ElementClosingTagEndWithoutStart
-    | ElementSelfClosingTagEndWithoutStart
-
-  ElementOpeningTagStartWithoutEnd = #(openingTagStart tagName) Attributes
-  ElementOpeningTagEndWithoutStart = #(tagName) Attributes openingTagEnd
-  ElementClosingTagStartWithoutEnd = #(closingTagStart tagName)
-  ElementClosingTagEndWithoutStart = #(tagName) closingTagEnd
-  ElementSelfClosingTagEndWithoutStart = #(tagName) Attributes selfClosingTagEnd
+  TextNode = anyExceptPlus<(ElementNode)>
 
 	ElementNode =
     | ElementOpeningTag

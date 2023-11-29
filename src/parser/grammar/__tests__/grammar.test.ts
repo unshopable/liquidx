@@ -36,17 +36,6 @@ it('should parse valid LiquidX tags', () => {
   expectMatchSucceeded('<Image />').toBe(true);
 });
 
-it('should not parse invalid LiquidX tags', () => {
-  expectMatchSucceeded('< Button>').toBe(false);
-  expectMatchSucceeded('<Button').toBe(false);
-  expectMatchSucceeded('<Button attr').toBe(false);
-  expectMatchSucceeded('Button>').toBe(false);
-  expectMatchSucceeded('Button attr>').toBe(false);
-  expectMatchSucceeded('</Button').toBe(false);
-  expectMatchSucceeded('Image />').toBe(false);
-  expectMatchSucceeded('Image attr />').toBe(false);
-});
-
 function expectMatchSucceeded(source: string) {
   const match = grammar.match(source);
 

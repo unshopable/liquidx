@@ -1,3 +1,4 @@
+import dedent from 'dedent-js';
 import { expectOutput } from './utils';
 
 it('should parse plain text', () => {
@@ -19,4 +20,13 @@ it('should parse custom HTML elements', () => {
 
   expectOutput(input).toHaveProperty('0.type', 'TextNode');
   expectOutput(input).toHaveProperty('0.value', '<custom-button></custom-button>');
+});
+
+it('regression #1', () => {
+  const input = dedent`
+  A > B
+  `;
+
+  expectOutput(input).toHaveProperty('0.type', 'TextNode');
+  expectOutput(input).toHaveProperty('0.value', 'A > B');
 });
